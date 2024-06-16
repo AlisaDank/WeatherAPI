@@ -9,9 +9,11 @@
     <form th:method="POST" th:action="@{/registration}" th:object="${user}">
         <label for="login">Enter login:</label>
         <input type="text" id="login" th:field="*{login}">
+        <div style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Login Error</div>
         <br/>
         <label for="password">Enter password:</label>
         <input type="password" id="password" th:field="*{password}">
+        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
         <br/>
         <input type="submit" value="Sign up!">
     </form>
