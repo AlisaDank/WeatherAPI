@@ -2,6 +2,7 @@ package com.roadmap.WeatherAPI.controller;
 
 import com.roadmap.WeatherAPI.model.User;
 import com.roadmap.WeatherAPI.service.UserService;
+import com.roadmap.WeatherAPI.util.UserValidation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,15 +10,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class AuthController {
     private final UserService userService;
+    private final UserValidation userValidation;
 
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, UserValidation userValidation) {
         this.userService = userService;
+        this.userValidation = userValidation;
     }
 
     @GetMapping("/login")
@@ -31,11 +33,12 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public String registration(@RequestBody @Valid User user, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        userValidation.validate(user,bindingResult);
         if (bindingResult.hasErrors()) {
-            return "redirect:auth/registration";
+            return "auth/registration";
         }
         userService.addUser(user);
-        return "auth/login";
+        return "redirect:auth/login";
     }
 }

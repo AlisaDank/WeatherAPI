@@ -7,14 +7,14 @@
 <body>
     <form name="login_form" action="/process_login" method="post">
         <label for="login">Enter your login:</label>
-        <input type="text" id="login">
+        <input type="text" id="login" name="username">
         <br/>
         <label for="password">Enter your password:</label>
-        <input type="password" id="password">
+        <input type="password" id="password" name="password">
         <br/>
         <input type="submit" value="Sign in">
-    </form>
 
-    <div style="color: red" th:if="${param.error}">Wrong login or password</div>
+        <div style="color: red" th:if="${param.error}">Wrong login or password</div>
+    </form>
 </body>
 </html>
