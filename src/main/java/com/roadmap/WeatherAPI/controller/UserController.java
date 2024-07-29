@@ -1,13 +1,44 @@
 package com.roadmap.WeatherAPI.controller;
 
+import com.roadmap.WeatherAPI.dto.LocationWithTemperatureDTO;
+import com.roadmap.WeatherAPI.model.User;
+import com.roadmap.WeatherAPI.security.UserDetailsImpl;
+import com.roadmap.WeatherAPI.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
+    public final UserService userService;
 
-    @GetMapping("/user")
-    public String showUserPage() {
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public String showUserPage(Model model, @AuthenticationPrincipal UserDetailsImpl currentUser) {
+        User user = currentUser.getUser();
+        List<LocationWithTemperatureDTO> locations = userService.showLocations(user);
+        model.addAttribute("user", user);
+        model.addAttribute("locations", locations);
         return "user";
+    }
+
+    @DeleteMapping("/delete_location/{name}")
+    public String deleteLocationFromUserList(@PathVariable("name") String name,
+                                             @AuthenticationPrincipal UserDetailsImpl currentUser) {
+        User user = currentUser.getUser();
+        userService.deleteLocation(name, user);
+        return "redirect:/user";
     }
 }

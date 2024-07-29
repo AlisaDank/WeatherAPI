@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Page</title>
+    <title>Searching Page</title>
 </head>
 <body>
     <header>
@@ -24,14 +24,15 @@
         </form>
 
         <fieldset>
-            <div th:each="location : ${locations}">
-                <p th:text="${location.getName()}"></p>
-                <p th:text="${location.getTemperature()}"></p>
-                <form th:method="DELETE" th:action="@{/user/delete_location/{name}(name=${location.getName()})}">
-                    <input type="submit" value="Delete">
-                </form>
-            </div>
+            <form th:each="location : ${locations}" th:method="POST" th:action="@{/location/add}">
+                    <p th:text="${location.getName()} + ', ' + ${location.getCountry()}"></p>
+                    <input type="hidden" th:name="name" th:value="${location.getName()}">
+                    <input type="hidden" th:name="lat" th:value="${location.getLat()}">
+                    <input type="hidden" th:name="lon" th:value="${location.getLon()}">
+                    <input type="submit" value="Add">
+            </form>
         </fieldset>
     </main>
+
 </body>
 </html>

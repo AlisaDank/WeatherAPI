@@ -1,7 +1,5 @@
 package com.roadmap.WeatherAPI.dto;
 
-import java.io.Serializable;
-
 public class UserDTO {
     private String login;
     private String password;
