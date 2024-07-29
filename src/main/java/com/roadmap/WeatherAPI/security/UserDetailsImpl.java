@@ -28,4 +28,8 @@ public class UserDetailsImpl implements UserDetails {
     public String getUsername() {
         return this.user.getLogin();
     }
+
+    public User getUser() {
+        return user;
+    }
 }
