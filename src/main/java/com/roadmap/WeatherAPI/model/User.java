@@ -59,10 +59,4 @@ public class User implements Serializable {
         this.locations = locations;
     }
 
-    public void addLocation(Location location) {
-        if (locations == null) {
-            locations = new ArrayList<>();
-        }
-        locations.add(location);
-    }
 }

@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -32,8 +30,6 @@ public class OpenWeatherClient {
     public List<LocationDTO> searchLocationByName(String name) throws URISyntaxException, IOException, InterruptedException {
         String url = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=5&appid=%s"
                 .formatted(name, APIKey);
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();  // TODO: поискать актуальное решение и проверить, нужно ли вообще
-        connection.setConnectTimeout(50000);
         HttpRequest request = HttpRequest.newBuilder(new URI(url))
                 .GET()
                 .build();

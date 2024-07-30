@@ -71,13 +71,18 @@ public class UserService {
     }
 
     @Transactional
-    public void addLocation(Location location, User user) {
-        Optional<Location> presentLocation = locationService
-                .findByNameLatAndLon(location.getName(), location.getLat(), location.getLon());
-        if (presentLocation.isPresent() && user.getLocations().contains(presentLocation.get()))
-            return;
-        location.setUser(user);   // TODO исключить добавление уже существующей локации
-        user.addLocation(location);
-        userRepository.save(user);
+    public void addLocation(Location location, User currentUser) {// TODO исключить добавление уже существующей локации
+        User user = findByLogin(currentUser.getLogin()).get();
+        List<Location> locations = user.getLocations();
+        Hibernate.initialize(locations);
+        Optional<Location> optionalLocation = locations.stream()
+                .filter(loc -> Objects.equals(loc.getLon(), location.getLon())
+                        && Objects.equals(loc.getLat(), location.getLat()))
+                .findFirst();
+        if (optionalLocation.isEmpty()) {
+            locations.add(location);
+            location.setUser(user);
+            userRepository.save(user);
+        }
     }
 }
