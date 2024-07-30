@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,11 +31,12 @@ public class UserController {
         return "user";
     }
 
-    @DeleteMapping("/delete_location/{name}")
-    public String deleteLocationFromUserList(@PathVariable("name") String name,
+    @DeleteMapping("/delete_location")
+    public String deleteLocationFromUserList(@RequestParam(name = "lat") Double lat,
+                                             @RequestParam(name = "lon") Double lon,
                                              @AuthenticationPrincipal UserDetailsImpl currentUser) {
         User user = currentUser.getUser();
-        userService.deleteLocation(name, user);
+        userService.deleteLocation(lat, lon, user);
         return "redirect:/user";
     }
 }

@@ -24,7 +24,7 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations;
 
     public String getLogin() {

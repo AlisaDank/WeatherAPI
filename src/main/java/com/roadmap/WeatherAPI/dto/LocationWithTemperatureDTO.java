@@ -7,6 +7,8 @@ import java.util.Map;
 public class LocationWithTemperatureDTO {
     private String name;
     private Double temperature;
+    private Double latitude;
+    private Double longitude;
 
     public String getName() {
         return name;
@@ -24,9 +26,24 @@ public class LocationWithTemperatureDTO {
         this.temperature = temperature;
     }
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
     @JsonProperty("main")
     private void getTemperatureFromApi(Map<String, Object> main) {
         this.temperature = (Double) main.get("temp");
     }
-
 }

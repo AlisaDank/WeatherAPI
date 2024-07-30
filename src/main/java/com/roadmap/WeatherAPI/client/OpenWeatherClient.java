@@ -51,7 +51,10 @@ public class OpenWeatherClient {
                 .build();
         String response = client.send(request, HttpResponse.BodyHandlers.ofString())
                 .body();
-        return mapper.readerFor(LocationWithTemperatureDTO.class)
+        LocationWithTemperatureDTO locFromResponse = mapper.readerFor(LocationWithTemperatureDTO.class)
                 .readValue(response);
+        locFromResponse.setLatitude(location.getLat());
+        locFromResponse.setLongitude(location.getLon());
+        return locFromResponse;
     }
 }

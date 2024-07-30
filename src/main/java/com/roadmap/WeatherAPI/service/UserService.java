@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -58,9 +59,14 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteLocation(String locationName, User user) {
-        Location location = locationService.findByName(locationName).get();
-        user.getLocations().remove(location);
+    public void deleteLocation(Double lat, Double lon, User currentUser) {
+        User user = findByLogin(currentUser.getLogin()).get();
+        List<Location> locations = user.getLocations();
+        Hibernate.initialize(locations);
+        Optional<Location> location = locations.stream()
+                .filter(loc -> Objects.equals(loc.getLon(), lon) && Objects.equals(loc.getLat(), lat))
+                .findFirst();
+        locations.remove(location.get());
         userRepository.save(user);
     }
 

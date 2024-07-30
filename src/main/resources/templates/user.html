@@ -24,13 +24,13 @@
         </form>
 
         <fieldset>
-            <div th:each="location : ${locations}">
+            <form th:each="location : ${locations}" th:method="DELETE" th:action="@{/user/delete_location}">
                 <p th:text="${location.getName()}"></p>
                 <p th:text="${location.getTemperature()}"></p>
-                <form th:method="DELETE" th:action="@{/user/delete_location/{name}(name=${location.getName()})}">
-                    <input type="submit" value="Delete">
-                </form>
-            </div>
+                <input type="hidden" th:name="lat" th:value="${location.getLatitude()}">
+                <input type="hidden" th:name="lon" th:value="${location.getLongitude()}">
+                <input type="submit" value="Delete">
+            </form>
         </fieldset>
     </main>
 </body>
