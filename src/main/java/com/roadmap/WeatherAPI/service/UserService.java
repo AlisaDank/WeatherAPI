@@ -42,7 +42,8 @@ public class UserService {
         return userRepository.findUserByLogin(login);
     }
 
-    public List<LocationWithTemperatureDTO> showLocations(User user) {    //TODO разобраться, почему не показывает список локаций
+    public List<LocationWithTemperatureDTO> showLocations(User currentUser) {
+        User user = findByLogin(currentUser.getLogin()).get();
         List<Location> locations = user.getLocations();
         Hibernate.initialize(locations);
         return locations.stream()
