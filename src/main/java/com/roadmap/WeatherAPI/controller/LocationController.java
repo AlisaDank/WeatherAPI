@@ -2,13 +2,14 @@ package com.roadmap.WeatherAPI.controller;
 
 import com.roadmap.WeatherAPI.dto.LocationDTO;
 import com.roadmap.WeatherAPI.model.Location;
+import com.roadmap.WeatherAPI.model.User;
 import com.roadmap.WeatherAPI.security.UserDetailsImpl;
 import com.roadmap.WeatherAPI.service.LocationService;
-import com.roadmap.WeatherAPI.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,12 +20,10 @@ import java.util.List;
 @RequestMapping("/location")
 public class LocationController {
     private final LocationService locationService;
-    private final UserService userService;
 
     @Autowired
-    public LocationController(LocationService locationService, UserService userService) {
+    public LocationController(LocationService locationService) {
         this.locationService = locationService;
-        this.userService = userService;
     }
 
     @PostMapping("/search")
@@ -41,7 +40,16 @@ public class LocationController {
                               @RequestParam(name = "name") String name,
                               @RequestParam(name = "lat") Double lat,
                               @RequestParam(name = "lon") Double lon) {
-        userService.addLocation(new Location(name, lat, lon), currentUser.getUser());
+        locationService.addLocation(new Location(name, lat, lon), currentUser.getUser());
+        return "redirect:/user";
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteLocationFromUserList(@RequestParam(name = "lat") Double lat,
+                                             @RequestParam(name = "lon") Double lon,
+                                             @AuthenticationPrincipal UserDetailsImpl currentUser) {
+        User user = currentUser.getUser();
+        locationService.deleteLocation(lat, lon, user);
         return "redirect:/user";
     }
 }

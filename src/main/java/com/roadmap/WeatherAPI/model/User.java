@@ -18,10 +18,11 @@ public class User implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "login")
-    @NotEmpty(message = "This field should not be empty")
+    @Column(name = "login", unique = true)
+    @NotEmpty(message = "Введите логин")
     private String login;
     @Column(name = "password")
+    @NotEmpty(message = "Введите пароль")
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

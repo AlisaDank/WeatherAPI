@@ -43,7 +43,7 @@ public class AuthController {
         if (bindingResult.hasErrors()) {
             return "auth/registration";
         }
-        userService.addUser(user);
+        userService.registerUser(user);
         return "redirect:auth/login";
     }
 }
