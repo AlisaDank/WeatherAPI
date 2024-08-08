@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roadmap.WeatherAPI.dto.LocationDTO;
 import com.roadmap.WeatherAPI.dto.LocationWithTemperatureDTO;
 import com.roadmap.WeatherAPI.model.Location;
+import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -18,12 +21,14 @@ import java.util.List;
 
 @Component
 public class OpenWeatherClient {
+    private final ModelMapper modelMapper;
     private final ObjectMapper mapper;
-    private final String APIKey = "cf75087ea34994e9bad0f533171c01b3"; // TODO: закинуть ключ в ресурсы?
+    private final String APIKey = "cf75087ea34994e9bad0f533171c01b3"; // TODO: закинуть ключ в ресурсы
     private final HttpClient client = HttpClient.newHttpClient();
 
     @Autowired
-    public OpenWeatherClient(ObjectMapper mapper) {
+    public OpenWeatherClient(ModelMapper modelMapper, ObjectMapper mapper) {
+        this.modelMapper = modelMapper;
         this.mapper = mapper;
     }
 
@@ -47,10 +52,16 @@ public class OpenWeatherClient {
                 .build();
         String response = client.send(request, HttpResponse.BodyHandlers.ofString())
                 .body();
-        LocationWithTemperatureDTO locFromResponse = mapper.readerFor(LocationWithTemperatureDTO.class)
-                .readValue(response);
-        locFromResponse.setLatitude(location.getLat());
-        locFromResponse.setLongitude(location.getLon());
-        return locFromResponse;
+        JSONObject responseJSON = new JSONObject(response);
+        BigDecimal temperature = (BigDecimal) responseJSON.getJSONObject("main").get("temp");
+        LocationWithTemperatureDTO locationDTO = modelMapper.map(location, LocationWithTemperatureDTO.class);
+        locationDTO.setTemperature(temperature.doubleValue());
+        return locationDTO;
+
+//        LocationWithTemperatureDTO locFromResponse = mapper.readerFor(LocationWithTemperatureDTO.class)
+//                .readValue(response);
+//        locFromResponse.setLatitude(location.getLat());
+//        locFromResponse.setLongitude(location.getLon());
+//        return locFromResponse;
     }
 }
