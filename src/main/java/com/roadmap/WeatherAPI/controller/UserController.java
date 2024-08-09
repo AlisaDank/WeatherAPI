@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping
     public String showUserPage(Model model, @AuthenticationPrincipal UserDetailsImpl currentUser) {
         User user = currentUser.getUser();
-        List<LocationWithTemperatureDTO> locations = locationService.showLocations(user);
+        List<LocationWithTemperatureDTO> locations = locationService.showUserLocations(user);
         model.addAttribute("user", user);
         model.addAttribute("locations", locations);
         return "user";

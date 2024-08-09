@@ -1,14 +1,10 @@
 package com.roadmap.WeatherAPI.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Map;
-
 public class LocationWithTemperatureDTO {
     private String name;
     private Double temperature;
-    private Double latitude;
-    private Double longitude;
+    private Double lat;
+    private Double lon;
 
     public String getName() {
         return name;
@@ -26,24 +22,19 @@ public class LocationWithTemperatureDTO {
         this.temperature = temperature;
     }
 
-    public Double getLatitude() {
-        return latitude;
+    public Double getLat() {
+        return lat;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setLat(Double lat) {
+        this.lat = lat;
     }
 
-    public Double getLongitude() {
-        return longitude;
+    public Double getLon() {
+        return lon;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    @JsonProperty("main")
-    private void getTemperatureFromApi(Map<String, Object> main) {
-        this.temperature = (Double) main.get("temp");
+    public void setLon(Double lon) {
+        this.lon = lon;
     }
 }

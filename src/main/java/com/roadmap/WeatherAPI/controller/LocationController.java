@@ -5,6 +5,7 @@ import com.roadmap.WeatherAPI.model.Location;
 import com.roadmap.WeatherAPI.model.User;
 import com.roadmap.WeatherAPI.security.UserDetailsImpl;
 import com.roadmap.WeatherAPI.service.LocationService;
+import com.roadmap.WeatherAPI.service.OpenWeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,16 +21,18 @@ import java.util.List;
 @RequestMapping("/location")
 public class LocationController {
     private final LocationService locationService;
+    private final OpenWeatherService openWeatherService;
 
     @Autowired
-    public LocationController(LocationService locationService) {
+    public LocationController(LocationService locationService, OpenWeatherService openWeatherService) {
         this.locationService = locationService;
+        this.openWeatherService = openWeatherService;
     }
 
     @PostMapping("/search")
     public String searchLocation(@RequestParam(name = "locationName") String name, Model model,
                                  @AuthenticationPrincipal UserDetailsImpl currentUser) {
-        List<LocationDTO> locations = locationService.getLocationsFromAPI(name);
+        List<LocationDTO> locations = openWeatherService.getLocationsFromAPI(name);
         model.addAttribute("locations", locations);
         model.addAttribute("user", currentUser.getUser());
         return "search";
