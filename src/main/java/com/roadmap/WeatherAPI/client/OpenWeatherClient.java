@@ -1,6 +1,10 @@
 package com.roadmap.WeatherAPI.client;
 
+import com.roadmap.WeatherAPI.exception.WeatherClientException;
+import com.roadmap.WeatherAPI.exception.WeatherServerException;
 import com.roadmap.WeatherAPI.model.Location;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -11,9 +15,19 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Component
+@PropertySource("classpath:private.properties")
 public class OpenWeatherClient {
-    private final String APIKey = "cf75087ea34994e9bad0f533171c01b3"; // TODO: закинуть ключ в ресурсы
-    private final HttpClient client = HttpClient.newHttpClient();
+    @Value("${apikey}")
+    private String APIKey;
+    private final HttpClient client;
+
+    public OpenWeatherClient() {
+        this.client = HttpClient.newHttpClient();
+    }
+
+    public OpenWeatherClient(HttpClient client) {
+        this.client = client;
+    }
 
     public String searchLocationByName(String name) throws URISyntaxException, IOException, InterruptedException {
         String url = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=5&appid=%s"
@@ -32,7 +46,12 @@ public class OpenWeatherClient {
         HttpRequest request = HttpRequest.newBuilder(new URI(url))
                 .GET()
                 .build();
-        return client.send(request, HttpResponse.BodyHandlers.ofString())
-                .body();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() / 100 == 4) {
+            throw new WeatherClientException("Something wrong with request");
+        } else if (response.statusCode() / 100 == 5) {
+            throw new WeatherServerException("Something goes wrong in API");
+        }
+        return response.body();
     }
 }

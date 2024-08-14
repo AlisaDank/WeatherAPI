@@ -24,11 +24,13 @@
         </form>
 
         <fieldset>
-            <form th:each="location : ${locations}" th:method="DELETE" th:action="@{/user/delete_location}">
+            <div style="color: darkblue" th:if="${locations.isEmpty()}">
+                У вас пока не добавлена ни одна локация для отслеживания погоды</div>
+            <form th:each="location : ${locations}" th:method="DELETE" th:action="@{/location/delete}">
                 <p th:text="${location.getName()}"></p>
                 <p th:text="${location.getTemperature()}"></p>
-                <input type="hidden" th:name="lat" th:value="${location.getLatitude()}">
-                <input type="hidden" th:name="lon" th:value="${location.getLongitude()}">
+                <input type="hidden" th:name="lat" th:value="${location.getLat()}">
+                <input type="hidden" th:name="lon" th:value="${location.getLon()}">
                 <input type="submit" value="Delete">
             </form>
         </fieldset>

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,6 +31,9 @@ public class OpenWeatherService {
     public List<LocationDTO> getLocationsFromAPI(String name) {
         try {
             String responseFromAPI = client.searchLocationByName(name);
+            if (responseFromAPI.isEmpty()) {
+                return Collections.emptyList();
+            }
             return objectMapper.readValue(responseFromAPI, new TypeReference<>() {});
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
