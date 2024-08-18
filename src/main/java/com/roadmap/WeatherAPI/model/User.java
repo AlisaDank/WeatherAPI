@@ -1,7 +1,9 @@
 package com.roadmap.WeatherAPI.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,10 +20,12 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "login", unique = true)
-    @NotEmpty(message = "Введите логин")
+    @NotEmpty(message = "Это поле не может быть пустым")
+    @Size(min = 3, message = "Логин должен быть не короче 3х символов")
     private String login;
     @Column(name = "password")
-    @NotEmpty(message = "Введите пароль")
+    @NotEmpty(message = "Это поле не может быть пустым")
+    @Size(min = 3, message = "Придумайте пароль не короче 3х символов")
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

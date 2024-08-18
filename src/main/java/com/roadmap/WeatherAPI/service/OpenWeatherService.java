@@ -52,8 +52,10 @@ public class OpenWeatherService {
     private LocationWithTemperatureDTO parseResponseFromWeatherAPIToDTO(String response, Location location) {
         JSONObject responseJSON = new JSONObject(response);
         BigDecimal temperature = (BigDecimal) responseJSON.getJSONObject("main").get("temp");
+        String country = responseJSON.getJSONObject("sys").getString("country");
         LocationWithTemperatureDTO locationDTO = modelMapper.map(location, LocationWithTemperatureDTO.class);
         locationDTO.setTemperature(temperature.doubleValue());
+        locationDTO.setCountry(country);
         return locationDTO;
     }
 }

@@ -2,6 +2,7 @@ package com.roadmap.WeatherAPI.dto;
 
 public class LocationWithTemperatureDTO {
     private String name;
+    private String country;
     private Double temperature;
     private Double lat;
     private Double lon;
@@ -12,6 +13,14 @@ public class LocationWithTemperatureDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Double getTemperature() {
