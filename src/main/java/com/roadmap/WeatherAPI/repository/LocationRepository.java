@@ -1,6 +1,8 @@
 package com.roadmap.WeatherAPI.repository;
 
 import com.roadmap.WeatherAPI.model.Location;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +21,7 @@ public interface LocationRepository extends JpaRepository<Location, Integer> {
     @Query(value = "select * from locations where user_id = :userId and latitude = :lat and longitude = :lon",
             nativeQuery = true)
     Optional<Location> findByUserIdAndLatAndLon(Integer userId, Double lat, Double lon);
+
+    @Query(value = "select * from locations where user_id = :userId", nativeQuery = true)
+    Page<Location> findAllByUserId(Integer userId, Pageable pageable);
 }
