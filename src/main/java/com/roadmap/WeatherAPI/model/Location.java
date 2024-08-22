@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "locations",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"latitude", "longitude", "user_id"},
-                name = "UniqueUserAndCoordinates")})
+                name = "unique_location")})
 public class Location implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
