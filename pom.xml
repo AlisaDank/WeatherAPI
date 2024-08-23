@@ -129,21 +129,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-				<version>10.17.1</version>
-				<configuration>
-					<user>postgrUser</user>
-					<password>postgrPass</password>
-					<url>jdbc:postgresql://localhost:5432/weatherdb</url>
-					<schemas>
-						<schema>weatherdb</schema>
-						<schema>public</schema>
-					</schemas>
-					<cleanDisabled>false</cleanDisabled>
-				</configuration>
-			</plugin>
 
 		</plugins>
 	</build>
