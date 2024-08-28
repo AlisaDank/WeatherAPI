@@ -28,6 +28,9 @@ public class UserController {
         User user = currentUser.getUser();
         Integer itemsPerPage = 6;
         Page<LocationWithTemperatureDTO> locations = locationService.showUserLocations(user, pageNumber, itemsPerPage);
+        if (pageNumber > 0 && locations.isEmpty()) {
+            return "redirect:/user";
+        }
         model.addAttribute("user", user);
         model.addAttribute("locations", locations);
         model.addAttribute("currentPage", pageNumber);

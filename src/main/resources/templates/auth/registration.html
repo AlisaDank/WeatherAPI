@@ -18,18 +18,18 @@
             <label for="login" class="col-sm-1 text-end col-form-label">Логин:</label>
             <div class="col-sm-3">
                 <input type="text" id="login" th:field="*{login}" placeholder="Введите логин.." class="form-control">
+                <div style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}" class="text-center">Login Error</div>
             </div>
         </div>
-        <div style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}" class="text-center">Login Error</div>
         <br/>
         <div class="row justify-content-center">
             <label for="password"  class="col-sm-1 text-end col-form-label">Пароль:</label>
             <div class="col-sm-3">
                 <input type="password" id="password" th:field="*{password}"
                        placeholder="Придумайте пароль.." class="form-control">
+                <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-center">Password error</div>
             </div>
         </div>
-        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-center">Password error</div>
         <br/>
         <button type="submit" class="btn btn-primary d-grid mx-auto">Зарегистрироваться</button>
     </form>

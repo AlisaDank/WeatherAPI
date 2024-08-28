@@ -56,7 +56,7 @@
         </fieldset>
         <br/>
         <nav>
-            <ul class="pagination justify-content-center">
+            <ul class="pagination justify-content-center" th:if="${locations.getTotalPages() > 1}">
                 <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
                     <a class="page-link" th:href="@{/user(pageNumber=${currentPage - 1})}">Назад</a>
                 </li>

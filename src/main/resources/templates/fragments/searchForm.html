@@ -15,7 +15,8 @@
 
             <label for="search" class="form-label col-8 fw-semibold fst-italic">Для поиска новой локации:</label>
             <div class="col-6">
-                <input type="text" th:name="locationName" id="search" class="form-control" placeholder="Введите название локации..">
+                <input type="text" th:name="locationName" id="search" class="form-control"
+                       placeholder="Введите название локации.." required>
             </div>
             <button type="submit" class="btn btn-sm btn-outline-info col-md-auto">Найти</button>
         </form>

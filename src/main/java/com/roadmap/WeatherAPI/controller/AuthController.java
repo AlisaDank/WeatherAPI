@@ -26,6 +26,11 @@ public class AuthController {
         this.mapper = mapper;
     }
 
+    @GetMapping("/")
+    public String showMainPage() {
+        return "main";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "auth/login";
